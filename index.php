@@ -19,6 +19,8 @@
     messagingSenderId: "865331337873",
     appId: "1:865331337873:web:3750a090391c3457097d30"
   };
+
+
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
@@ -36,6 +38,16 @@
       return false;
   }
 
+  //listen for incoming messages
+  firebase.database().ref("message").on("child_added", function(snapshot) {
+    var html="";
+    html +="<li>";
+      html += snapshot.val().sender + ": " + snapshot.val().message;
+    html +="</li>";
+
+    document.getElementById("messages").innerHTML += html;
+
+  });
 </script>
 
 <!--create a form to send message -->
@@ -43,3 +55,7 @@
   <input id="message" placeholder = "Enter message" autocomplete="off">
   <input type="submit">
 </form>
+
+
+<!--create a list -->
+<ul id="messages"></ul>
